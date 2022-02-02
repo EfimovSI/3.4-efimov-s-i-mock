@@ -33,16 +33,22 @@ public class AfishaManager {
 
     public Movie[] getList() {
         int resultLength;
-        if (movies.length >= movieListLimit) {
-            resultLength = movieListLimit;
+        if (movies == null) {
+            Movie[] tmp = new Movie[0];
+            movies = tmp;
+            return movies;
         } else {
-            resultLength = movies.length;
+            if (movies.length >= movieListLimit) {
+                resultLength = movieListLimit;
+            } else {
+                resultLength = movies.length;
+            }
+            Movie[] result = new Movie[resultLength];
+            for (int i = 0; i < resultLength; i++) {
+                int index = movies.length - 1 - i;
+                result[i] = movies[index];
+            }
+            return result;
         }
-        Movie[] result = new Movie[resultLength];
-        for (int i = 0; i < resultLength; i++) {
-            int index = movies.length - 1 - i;
-            result[i] = movies[index];
-        }
-        return result;
     }
 }

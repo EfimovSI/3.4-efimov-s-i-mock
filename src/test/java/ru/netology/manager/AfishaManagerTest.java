@@ -82,4 +82,11 @@ class AfishaManagerTest {
 
         assertArrayEquals(expected, manager.getList());
     }
+
+    @Test
+    void shouldShowEmptyList() {
+        Movie[] expected = new Movie[0];
+
+        assertArrayEquals(expected, manager.getList());
+    }
 }
