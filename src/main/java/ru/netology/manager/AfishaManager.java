@@ -18,6 +18,10 @@ public class AfishaManager {
         this.movieListLimit = movieListLimit;
     }
 
+    public AfishaManager(MovieRepository repository) {
+        this.repository = repository;
+    }
+
     public void add(Movie movie) {
         repository.save(movie);
     }
