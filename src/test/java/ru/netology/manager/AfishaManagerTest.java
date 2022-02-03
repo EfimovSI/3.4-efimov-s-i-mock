@@ -36,10 +36,9 @@ class AfishaManagerTest {
     @Test
     void shouldAddFirstMovie() {
         manager.add(first);
-        Movie[] expected;
-        expected = new Movie[]{first};
+        Movie[] expected = new Movie[]{first};
 
-        assertArrayEquals(expected, manager.getMovies());
+        assertArrayEquals(expected, manager.getList());
     }
 
     @Test
@@ -88,5 +87,61 @@ class AfishaManagerTest {
         Movie[] expected = new Movie[0];
 
         assertArrayEquals(expected, manager.getList());
+    }
+
+    @Test
+    void shouldFindByIdWhenExist() {
+        manager.add(first);
+        manager.add(second);
+        manager.add(third);
+        manager.add(fourth);
+        manager.add(fifth);
+
+        assertEquals(fourth, manager.findById(4));
+    }
+
+    @Test
+    void shouldFindByIdWhenNotExist() {
+        manager.add(first);
+        manager.add(second);
+        manager.add(third);
+        manager.add(fourth);
+        manager.add(fifth);
+
+        assertEquals(null, manager.findById(10));
+    }
+
+    @Test
+    void shouldRemoveByIdWhenExist() {
+        manager.add(first);
+        manager.add(second);
+        manager.add(third);
+        manager.add(fourth);
+        manager.add(fifth);
+        manager.removeById(4);
+        Movie[] expected = new Movie[]{fifth, third, second, first};
+
+        assertArrayEquals(expected, manager.getList());
+    }
+
+    @Test
+    void shouldRemoveByIdWhenNotExist() {
+        manager.add(first);
+        manager.add(second);
+        manager.add(third);
+        manager.removeById(10);
+        Movie[] expected = new Movie[]{third, second, first};
+
+        assertArrayEquals(expected, manager.getList());
+    }
+
+    @Test
+    void shouldRemoveAll() {
+        manager.add(first);
+        manager.add(second);
+        manager.add(third);
+        manager.removeAll();
+
+        assertArrayEquals(new Movie[0], manager.getList());
     }
 }
