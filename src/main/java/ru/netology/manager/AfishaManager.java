@@ -1,54 +1,56 @@
 package ru.netology.manager;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.netology.domain.Movie;
+import ru.netology.repository.MovieRepository;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class AfishaManager {
     private int movieListLimit = 10;
 
-    private Movie[] movies;
+    private MovieRepository repository = new MovieRepository();
 
     public AfishaManager(int movieListLimit) {
         this.movieListLimit = movieListLimit;
     }
 
+    public AfishaManager(MovieRepository repository) {
+        this.repository = repository;
+    }
+
     public void add(Movie movie) {
-        int length;
-        if (movies == null) {
-            Movie[] tmp = new Movie[1];
-            tmp[0] = movie;
-            movies = tmp;
-        } else {
-            length = movies.length + 1;
-            Movie[] tmp = new Movie[length];
-            System.arraycopy(movies, 0, tmp, 0, movies.length);
-            int lastIndex = tmp.length - 1;
-            tmp[lastIndex] = movie;
-            movies = tmp;
-        }
+        repository.save(movie);
+    }
+
+    public Movie findById(int id) {
+        return repository.findById(id);
+    }
+
+    public void removeById(int id) {
+        repository.removeById(id);
+    }
+
+    public void removeAll() {
+        repository.removeAll();
     }
 
     public Movie[] getList() {
         int resultLength;
-        if (movies == null) {
-            Movie[] tmp = new Movie[0];
-            movies = tmp;
-            return movies;
+        Movie[] movies = repository.findAll();
+        if (movies.length >= movieListLimit) {
+            resultLength = movieListLimit;
         } else {
-            if (movies.length >= movieListLimit) {
-                resultLength = movieListLimit;
-            } else {
-                resultLength = movies.length;
-            }
-            Movie[] result = new Movie[resultLength];
-            for (int i = 0; i < resultLength; i++) {
-                int index = movies.length - 1 - i;
-                result[i] = movies[index];
-            }
-            return result;
+            resultLength = movies.length;
         }
+        Movie[] result = new Movie[resultLength];
+        for (int i = 0; i < resultLength; i++) {
+            int index = movies.length - 1 - i;
+            result[i] = movies[index];
+        }
+        return result;
     }
 }
